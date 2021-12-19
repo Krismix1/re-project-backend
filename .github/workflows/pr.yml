@@ -36,8 +36,7 @@ jobs:
       - name: Run checkers
         run: |
           set -e
-          poetry shell
-          isort --check-only .
-          pydocstyle .
-          black --check .
-          pylint backend
+          poetry run isort --check-only .
+          poetry run pydocstyle .
+          poetry run black --check .
+          poetry run pylint backend
