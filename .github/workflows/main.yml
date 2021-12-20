@@ -1,12 +1,59 @@
-name: Deploy
+name: Main
 
+# Events that trigger a workflow:
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 on:
+  pull_request:
+    branches:
+      - master
   push:
     branches:
       - master
+  # Allows to run this workflow manually from the Actions tab
   workflow_dispatch: {}
 
 jobs:
+  code-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2.3.4
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      # - name: Load cache (if exists)
+      #   uses: actions/cache@v2.1.3
+      #   with:
+      #     path: ~/.cache/pip
+      #     key: ${{ runner.os }}-pip
+      #     restore-keys: ${{ runner.os }}-pip
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.12
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root -vvv
+
+      - name: Run checkers
+        run: |
+          set -e
+          poetry run isort --check-only .
+          poetry run pydocstyle .
+          poetry run black --check .
+          poetry run pylint backend
+
+      - name: Build Docker image
+        run: docker build -t internship-platform-backend .
+
   deploy:
-    name: Check code
-    uses: Krismix1/re-project-backend/.github/workflows/pr.yml@v1
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+    if: github.ref_name == "master"
+    steps:
+      - name: Deploy
+        run: echo "$GITHUB_RUN_ID"
