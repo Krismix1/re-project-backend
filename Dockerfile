@@ -31,4 +31,6 @@ WORKDIR $SETUP_PATH
 
 COPY --from=build $SETUP_PATH $SETUP_PATH
 
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "5000"]
+# https://devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime
+# must read port value from env vars
+CMD exec uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:=5000}

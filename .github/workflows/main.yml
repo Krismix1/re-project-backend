@@ -53,7 +53,23 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
-    if: ${{ github.ref_name == 'master' }}
+    # if: ${{ github.ref_name == 'master' }}
+    needs: [code-check]
+    environment: production
+    env:
+      HEROKU_PROJECT_NAME: internship-search-platform-be
     steps:
-      - name: Deploy
-        run: echo "$GITHUB_RUN_ID"
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Deploying to Heroku
+        # More details available at:
+        # https://github.com/akhileshns/heroku-deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ env.HEROKU_PROJECT_NAME }}
+          heroku_email: 'cbetivu@gmail.com'
+          healthcheck: 'https://${{ env.HEROKU_PROJECT_NAME }}.herokuapp.com/healthcheck'
+          rollbackonhealthcheckfailed: true
+          # https://github.com/AkhileshNS/heroku-deploy#deploy-with-docker
+          usedocker: true
