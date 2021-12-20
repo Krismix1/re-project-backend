@@ -3,7 +3,7 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 
-from backend.router import router
+from backend.router import ops_router, router
 
 OPEN_API_TAGS_METADATA = [
     {"name": "auth", "description": "Actions for authorization operations."},
@@ -13,6 +13,7 @@ OPEN_API_TAGS_METADATA = [
 app = FastAPI(title="Internship platform API")
 
 app.include_router(router, prefix="/api/v1")
+app.include_router(ops_router)
 
 
 def custom_openapi():

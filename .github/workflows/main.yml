@@ -69,7 +69,7 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ env.HEROKU_PROJECT_NAME }}
           heroku_email: 'cbetivu@gmail.com'
-          healthcheck: 'https://${{ env.HEROKU_PROJECT_NAME }}.herokuapp.com/hello'
+          healthcheck: 'https://${{ env.HEROKU_PROJECT_NAME }}.herokuapp.com/healthcheck'
           rollbackonhealthcheckfailed: true
           # https://github.com/AkhileshNS/heroku-deploy#deploy-with-docker
           usedocker: true
