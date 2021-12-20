@@ -10,7 +10,7 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  lint:
+  code-check:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -25,14 +25,17 @@ jobs:
       #     path: ~/.cache/pip
       #     key: ${{ runner.os }}-pip
       #     restore-keys: ${{ runner.os }}-pip
+
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
           version: 1.1.12
           virtualenvs-create: true
           virtualenvs-in-project: true
+
       - name: Install dependencies
         run: poetry install --no-interaction --no-root -vvv
+
       - name: Run checkers
         run: |
           set -e
@@ -40,3 +43,6 @@ jobs:
           poetry run pydocstyle .
           poetry run black --check .
           poetry run pylint backend
+
+      - name: Build Docker image
+        run: docker build -t internship-platform-backend .
