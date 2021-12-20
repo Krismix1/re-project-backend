@@ -1,0 +1,12 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    name: Check code
+    uses: Krismix1/re-project-backend/.github/workflows/pr.yml@v1
