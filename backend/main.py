@@ -1,7 +1,11 @@
 """Main module for FastAPI with creation of the FastAPI app itself."""
 from fastapi import FastAPI
 
+from backend.db import models
+from backend.db.database import engine
 from backend.router import ops_router, router
+
+models.Base.metadata.create_all(bind=engine)
 
 OPEN_API_TAGS_METADATA = [
     {"name": "auth", "description": "Actions for authorization operations."},
