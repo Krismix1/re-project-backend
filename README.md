@@ -5,8 +5,8 @@
 ### Recommended setup
 
 - Install [`poetry`](https://github.com/python-poetry/poetry#installation) and [`pyenv`](https://github.com/pyenv/pyenv)
-- `pyenv install 3.10.0`
-- `pyenv local 3.10.0`
+- `pyenv install 3.9.9`
+- `pyenv local 3.9.9`
 - `poetry install`
 - `poetry run pre-commit install`
 - Run the application using `poetry run python -m backend`.
