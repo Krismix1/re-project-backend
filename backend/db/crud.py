@@ -1,8 +1,11 @@
+"""Database access layer."""
 from typing import Optional
 
 from sqlalchemy.orm import Session
 
 from backend.db import models, schemas
+
+# pylint:disable=missing-function-docstring
 
 
 def get_user(db: Session, user_id: int) -> Optional[models.User]:

@@ -5,6 +5,8 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     """Config class."""
 
+    DATABASE_URL: str = "postgresql://postgres:password@localhost/postgres"
+
     class Config:
         """Configuration for pydantic."""
 

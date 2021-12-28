@@ -1,7 +1,10 @@
+"""Database models."""
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from backend.db.database import Base
+
+# pylint:disable=missing-class-docstring
 
 
 class User(Base):

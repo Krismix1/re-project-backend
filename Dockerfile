@@ -1,4 +1,4 @@
-FROM python:3.10.1-bullseye as build
+FROM python:3.9.9-bullseye as build
 
 # Create shared ENV VARs for setup and runtime
 ENV POETRY_VERSION="1.1.12" \
@@ -23,7 +23,7 @@ RUN python3 -m pip install "poetry==$POETRY_VERSION" && \
 COPY backend backend
 
 # Runtime image
-FROM python:3.10.1-slim-bullseye as runtime
+FROM python:3.9.9-slim-bullseye as runtime
 
 ENV SETUP_PATH="/opt/app"
 ENV PATH="$SETUP_PATH/.venv/bin:$PATH"

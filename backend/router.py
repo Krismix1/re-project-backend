@@ -9,6 +9,8 @@ from backend.dependencies import get_db
 router = APIRouter()
 ops_router = APIRouter()
 
+# pylint:disable=missing-function-docstring
+
 
 @ops_router.get("/healthcheck", response_class=PlainTextResponse)
 async def healthcheck() -> str:
