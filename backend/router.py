@@ -3,8 +3,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
 
+from backend.core.config import SETTINGS
 from backend.db import crud, schemas
 from backend.dependencies import get_db
+from backend.schemas.operational import BuildInfo
 
 router = APIRouter()
 ops_router = APIRouter()
@@ -16,6 +18,11 @@ ops_router = APIRouter()
 async def healthcheck() -> str:
     """Heroku healthcheck endpoint."""
     return "OK"
+
+
+@ops_router.get("/build-info", response_model=BuildInfo)
+async def build_info():
+    return {"build_id": SETTINGS.BUILD_ID}
 
 
 @router.post("/users", response_model=schemas.User)

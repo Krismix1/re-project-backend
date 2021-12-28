@@ -7,6 +7,7 @@ from pydantic import BaseSettings, validator
 class Settings(BaseSettings):
     """Config class."""
 
+    BUILD_ID: str = "local"
     DATABASE_URL: str = "postgresql://postgres:password@localhost/postgres"
 
     @validator("DATABASE_URL")
