@@ -14,13 +14,13 @@ ops_router = APIRouter()
 # pylint:disable=missing-function-docstring
 
 
-@ops_router.get("/healthcheck", response_class=PlainTextResponse)
+@ops_router.get("/healthcheck", response_class=PlainTextResponse, tags=["operational"])
 async def healthcheck() -> str:
     """Heroku healthcheck endpoint."""
     return "OK"
 
 
-@ops_router.get("/build-info", response_model=BuildInfo)
+@ops_router.get("/build-info", response_model=BuildInfo, tags=["operational"])
 async def build_info():
     return {"build_id": SETTINGS.BUILD_ID}
 

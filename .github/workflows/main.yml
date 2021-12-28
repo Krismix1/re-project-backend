@@ -74,4 +74,4 @@ jobs:
           # https://github.com/AkhileshNS/heroku-deploy#deploy-with-docker
           usedocker: true
         env:
-          BUILD_ID: ${{ github.run_id }}
+          HD_BUILD_ID: ${{ github.run_id }}
