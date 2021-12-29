@@ -1,0 +1,26 @@
+version: "3.3"
+services:
+  db:
+    image: postgres:13.5
+    volumes:
+      - app-db-data:/var/lib/postgresql/data/pgdata
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    ports:
+      - "5050:5050"
+    environment:
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_DEFAULT_EMAIL: admin@ubb.internship.com
+      PGADMIN_DEFAULT_PASSWORD: password
+
+
+volumes:
+  app-db-data: null

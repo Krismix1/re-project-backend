@@ -6,9 +6,12 @@ authors = ["Cristi B. <cbetivu@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 fastapi = {extras = ["all"], version = "^0.70.1"}
 uvicorn = "^0.15"
+SQLAlchemy = "^1.4.29"
+psycopg2-binary = "^2.9.2"
+alembic = "^1.7.5"
 
 [tool.poetry.dev-dependencies]
 black = "^21.12b0"
@@ -45,7 +48,8 @@ good-names="""
     x,
     y,
     z,
-    _
+    _,
+    db
     """
 
 extension-pkg-whitelist = "pydantic"
@@ -53,3 +57,19 @@ extension-pkg-whitelist = "pydantic"
 [tool.isort]
 # See: https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html?highlight=pyproject.toml#profile
 profile = "black"
+
+[tool.pydocstyle]
+convention = "pep257"
+inherit = false
+# By default, test files are ignored - this includes them back
+match = ".*.py"
+# D401 we don't like enforcing what words a docstring should start with
+# D100/D101/D102/D103/D104 we prefer having pylint telling us whether a module/function docstring is missing,
+# which also works nicer in the case of inheritance and abstract base classes.
+# D106 pydantic + ORM config classes are nested
+# D107 we have some __init__ methods that don't have a docstring, and it doesn't provide
+# any value to add a dummy docstring of the form "Initialize a new object"
+add-ignore = "D401,D100,D101,D102,D103,D104,D106,D107"
+
+# D212 enforces the docstring summary to be on the first docstring line starting with """
+add-select = "D212"

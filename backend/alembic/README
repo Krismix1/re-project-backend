@@ -1,0 +1,6 @@
+Generic single-database configuration.
+
+Generate new revision: `alembic revision -m "<msg>"`.
+Generate migration based on state difference between app and DB: `alembic revision --autogenerate -m "<msg>"`.
+Upgrade database to latest version: `alembic upgrade head`.
+Downgrade database to a previous version or to "nothing" (i.e. `base`): `alembic downgrade base`.

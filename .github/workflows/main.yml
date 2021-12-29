@@ -21,7 +21,7 @@ jobs:
       - name: Set up python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.9'
       # - name: Load cache (if exists)
       #   uses: actions/cache@v2.1.3
       #   with:
@@ -73,3 +73,5 @@ jobs:
           rollbackonhealthcheckfailed: true
           # https://github.com/AkhileshNS/heroku-deploy#deploy-with-docker
           usedocker: true
+        env:
+          HD_BUILD_ID: ${{ github.run_id }}
