@@ -6,10 +6,12 @@ from sqlalchemy.orm import Session
 from backend.core.config import SETTINGS
 from backend.db import crud, schemas
 from backend.dependencies import get_db
+from backend.routers import auth
 from backend.schemas.operational import BuildInfo
 
 router = APIRouter()
 ops_router = APIRouter()
+router.include_router(auth.router)
 
 
 @ops_router.get("/healthcheck", response_class=PlainTextResponse, tags=["operational"])

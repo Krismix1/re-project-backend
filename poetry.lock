@@ -682,7 +682,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "b38a7b0c83846350c468b4fb3ca3832143ef764a9f2e1610e8a5509d39f0b665"
+content-hash = "d1534520c5d799b79eb02570af8c9fcdaa8f1c83a50f98e18d6e68877ef2ad2d"
 
 [metadata.files]
 alembic = [
