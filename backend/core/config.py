@@ -1,7 +1,7 @@
 """Module for application configuration."""
 from pydantic import BaseSettings, validator
 
-# pylint:disable=no-self-use,no-self-argument,missing-function-docstring
+# pylint:disable=no-self-use,no-self-argument
 
 
 class Settings(BaseSettings):

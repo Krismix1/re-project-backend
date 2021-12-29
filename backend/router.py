@@ -11,8 +11,6 @@ from backend.schemas.operational import BuildInfo
 router = APIRouter()
 ops_router = APIRouter()
 
-# pylint:disable=missing-function-docstring
-
 
 @ops_router.get("/healthcheck", response_class=PlainTextResponse, tags=["operational"])
 async def healthcheck() -> str:
