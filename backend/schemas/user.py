@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field, SecretStr
 
 
 class UserBase(BaseModel):
-    email: str
+    email: EmailStr
 
 
 class User(UserBase):
@@ -13,4 +13,4 @@ class User(UserBase):
 
 
 class UserCreate(UserBase):
-    password: str
+    password: SecretStr = Field(..., min_length=8, max_length=64)

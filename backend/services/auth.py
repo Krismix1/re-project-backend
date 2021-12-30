@@ -36,12 +36,14 @@ def create_access_token(
     expire = datetime.utcnow() + expires_delta
     to_encode = data.copy()
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SETTINGS.JWT_SECRET_KEY, algorithm=SETTINGS.JWT_ALGORITHM)
+    encoded_jwt = jwt.encode(
+        to_encode, SETTINGS.JWT_SECRET_KEY.get_secret_value(), algorithm=SETTINGS.JWT_ALGORITHM
+    )
     return encoded_jwt
 
 
 def create_user(db: Session, user: user_schemas.UserCreate) -> models.User:
-    hashed_password = get_password_hash(user.password)
+    hashed_password = get_password_hash(user.password.get_secret_value())
     db_user = models.User(email=user.email, hashed_password=hashed_password)
     db.add(db_user)
     db.commit()
