@@ -75,3 +75,4 @@ jobs:
           usedocker: true
         env:
           HD_BUILD_ID: ${{ github.run_id }}
+          HD_JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
