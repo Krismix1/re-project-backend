@@ -1,14 +1,17 @@
 from datetime import datetime, timedelta
-from typing import Any, Literal, Union
+from typing import Any, Optional, Union
 
 from jose import jwt
 from passlib.context import CryptContext
+from sqlalchemy.orm import Session
 
+from backend import models
 from backend.core.config import SETTINGS
-from backend.schemas.user import UserInDB
-from backend.services.user import get_user
+from backend.schemas import user as user_schemas
+from backend.services.user import get_user_by_email
 
 UnicodeOrBytes = Union[str, bytes]
+# https://passlib.readthedocs.io/en/stable/narr/context-tutorial.html#deprecation-hash-migration
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -20,15 +23,11 @@ def get_password_hash(password: UnicodeOrBytes) -> str:
     return pwd_context.hash(password)
 
 
-def authenticate_user(
-    fake_db, username: str, password: UnicodeOrBytes
-) -> Union[Literal[False], UserInDB]:
-    user = get_user(fake_db, username)
-    if not user:
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
-    return user
+def authenticate_user(db: Session, email: str, password: UnicodeOrBytes) -> Optional[models.User]:
+    user = get_user_by_email(db, email)
+    if user and verify_password(password, user.hashed_password):
+        return user
+    return None
 
 
 def create_access_token(
@@ -39,3 +38,12 @@ def create_access_token(
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SETTINGS.JWT_SECRET_KEY, algorithm=SETTINGS.JWT_ALGORITHM)
     return encoded_jwt
+
+
+def create_user(db: Session, user: user_schemas.UserCreate) -> models.User:
+    hashed_password = get_password_hash(user.password)
+    db_user = models.User(email=user.email, hashed_password=hashed_password)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user

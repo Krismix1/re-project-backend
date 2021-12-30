@@ -1,4 +1,3 @@
-import os
 from logging.config import fileConfig
 
 from alembic import context
@@ -7,6 +6,7 @@ from sqlalchemy import engine_from_config, pool
 from backend.core.config import SETTINGS
 from backend.db.database import Base
 
+# pylint:disable=no-member
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

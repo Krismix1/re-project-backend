@@ -1,18 +1,18 @@
-from typing import Any, Optional
+"""Database access layer."""
+from typing import Optional
 
-from backend.schemas.user import UserInDB
+from sqlalchemy.orm import Session
 
-FAKE_USERS_DB = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-        "disabled": False,
-    }
-}
+from backend.models import user as user_models
 
 
-def get_user(db: dict[str, dict[str, Any]], username: str) -> Optional[UserInDB]:
-    user_dict = db.get(username)
-    return UserInDB(**user_dict) if user_dict else None
+def get_user(db: Session, user_id: int) -> Optional[user_models.User]:
+    return db.query(user_models.User).filter(user_models.User.id == user_id).first()
+
+
+def get_user_by_email(db: Session, email: str) -> Optional[user_models.User]:
+    return db.query(user_models.User).filter(user_models.User.email == email).first()
+
+
+def get_users(db: Session, *, skip: int = 0, limit: int = 100) -> list[user_models.User]:
+    return db.query(user_models.User).offset(skip).limit(limit).all()
