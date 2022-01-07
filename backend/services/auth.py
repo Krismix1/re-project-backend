@@ -44,7 +44,9 @@ def create_access_token(
 
 def create_user(db: Session, user: user_schemas.UserCreate) -> models.User:
     hashed_password = get_password_hash(user.password.get_secret_value())
-    db_user = models.User(email=user.email, hashed_password=hashed_password)
+    db_user = models.User(
+        email=user.email, hashed_password=hashed_password, user_type=user.user_type
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

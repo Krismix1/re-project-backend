@@ -16,7 +16,7 @@ class Settings(BaseSettings):
         "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
     )
     JWT_ALGORITHM = "HS256"
-    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 120
 
     @validator("DATABASE_URL")
     def set_database_url(cls, value: str) -> str:
