@@ -11,6 +11,7 @@ def create_student(
     db: Session, student: StudentProfileCreate, account_id: uuid.UUID
 ) -> models.Student:
     db_account = get_user(db, account_id)
+    print(student.birthday.isoformat())
     if not db_account:
         raise ValueError(f"User with ID {account_id} not found")
 
