@@ -1,11 +1,4 @@
-from enum import Enum
-
 from pydantic import BaseModel, EmailStr, Field, SecretStr
-
-
-class UserType(str, Enum):
-    STUDENT = "STUDENT"
-    COMPANY = "COMPANY"
 
 
 class UserBase(BaseModel):
@@ -21,4 +14,3 @@ class User(UserBase):
 
 class UserCreate(UserBase):
     password: SecretStr = Field(..., min_length=8, max_length=64)
-    user_type: UserType = Field(...)
