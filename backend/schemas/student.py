@@ -31,7 +31,7 @@ class StudentProfileCreate(BaseModel):
     phone: str
 
     education: list[Education]
-    Volunteering: list[Volunteering]
+    volunteering: list[Volunteering]
     # skills: list[Skill]
 
     # class Config:
