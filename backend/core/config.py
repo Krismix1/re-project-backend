@@ -1,7 +1,7 @@
 """Module for application configuration."""
-from pydantic import BaseSettings, validator
+from pydantic import BaseSettings, SecretStr, validator
 
-# pylint:disable=no-self-use,no-self-argument,missing-function-docstring
+# pylint:disable=no-self-use,no-self-argument
 
 
 class Settings(BaseSettings):
@@ -9,6 +9,14 @@ class Settings(BaseSettings):
 
     BUILD_ID: str = "local"
     DATABASE_URL: str = "postgresql://postgres:password@localhost/postgres"
+
+    # to get a string like this run:
+    # openssl rand -hex 32
+    JWT_SECRET_KEY: SecretStr = SecretStr(
+        "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+    )
+    JWT_ALGORITHM = "HS256"
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 120
 
     @validator("DATABASE_URL")
     def set_database_url(cls, value: str) -> str:
