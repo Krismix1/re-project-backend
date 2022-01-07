@@ -1,7 +1,7 @@
-"""authentication.
+"""Authentication.
 
 Revision ID: 7c8f7ddee2d6
-Revises: 
+Revises:
 Create Date: 2022-01-07 15:37:13.645409
 
 """
