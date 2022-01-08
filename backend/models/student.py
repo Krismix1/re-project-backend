@@ -50,7 +50,7 @@ class Student(Base):
     )
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    birthdate = Column(String, nullable=False)
+    birthdate = Column(Date, nullable=False)
     description = Column(String, nullable=False)
     phone = Column(String, nullable=False)
 

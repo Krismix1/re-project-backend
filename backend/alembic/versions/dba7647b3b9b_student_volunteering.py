@@ -35,7 +35,7 @@ def upgrade():
     op.create_index(op.f("ix_volunteerings_id"), "volunteerings", ["id"], unique=False)
     op.add_column("students", sa.Column("first_name", sa.String(), nullable=False))
     op.add_column("students", sa.Column("last_name", sa.String(), nullable=False))
-    op.add_column("students", sa.Column("birthdate", sa.String(), nullable=False))
+    op.add_column("students", sa.Column("birthdate", sa.Date(), nullable=False))
     op.add_column("students", sa.Column("description", sa.String(), nullable=False))
     op.add_column("students", sa.Column("phone", sa.String(), nullable=False))
     # ### end Alembic commands ###

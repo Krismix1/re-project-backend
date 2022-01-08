@@ -40,3 +40,7 @@ def create_student(
     db.commit()
     db.refresh(db_student)
     return db_student
+
+
+def get_students(db: Session, *, skip: int = 0, limit: int = 100) -> list[models.Student]:
+    return db.query(models.Student).offset(skip).limit(limit).all()

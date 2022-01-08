@@ -3,12 +3,13 @@ from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse
 
 from backend.core.config import SETTINGS
-from backend.routers import auth
+from backend.routers import auth, student
 from backend.schemas.operational import BuildInfo
 
 router = APIRouter()
 ops_router = APIRouter()
 router.include_router(auth.router)
+router.include_router(student.router)
 
 
 @ops_router.get("/healthcheck", response_class=PlainTextResponse, tags=["operational"])
