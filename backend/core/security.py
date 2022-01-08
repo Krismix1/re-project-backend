@@ -20,7 +20,9 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SETTINGS.JWT_SECRET_KEY, algorithms=[SETTINGS.JWT_ALGORITHM])
+        payload = jwt.decode(
+            token, SETTINGS.JWT_SECRET_KEY.get_secret_value(), algorithms=[SETTINGS.JWT_ALGORITHM]
+        )
 
     except JWTError as exc:
         raise credentials_exception from exc
