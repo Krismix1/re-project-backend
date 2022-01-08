@@ -17,7 +17,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 def request_validation_exception_handler(_request: Request, exc: RequestValidationError):
-    """Handle API request validation errors in a backward compatible way."""
     logging.error("Invalid body %s", exc.json())
     return JSONResponse(
         status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
@@ -29,6 +28,5 @@ app = FastAPI(title="Internship platform API", version="0.1.0", openapi_tags=OPE
 
 app.include_router(router, prefix="/api/v1")
 app.include_router(ops_router)
-
 
 app.add_exception_handler(RequestValidationError, request_validation_exception_handler)

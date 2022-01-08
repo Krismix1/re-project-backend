@@ -26,12 +26,12 @@ class StudentProfileCreate(BaseModel):
     password: SecretStr = Field(..., min_length=8, max_length=64)
     first_name: str = Field(..., alias="firstName")
     last_name: str = Field(..., alias="secondName")
-    birthday: datetime.date
+    birthdate: datetime.date = Field(..., alias="birthday")
     description: str
     phone: str
 
-    education: list[Education]
-    volunteering: list[Volunteering]
+    educations: list[Education] = Field(..., alias="education")
+    volunteerings: list[Volunteering] = Field(..., alias="volunteering")
     # skills: list[Skill]
 
     # class Config:
