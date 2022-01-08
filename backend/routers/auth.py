@@ -7,8 +7,9 @@ from sqlalchemy.orm import Session
 from backend.core.config import SETTINGS
 from backend.dependencies import get_db
 from backend.schemas.auth import TokenResponse
-from backend.schemas.user import User, UserCreate
-from backend.services import auth
+from backend.schemas.student import StudentProfileCreate
+from backend.schemas.user import UserCreate
+from backend.services import auth, students
 from backend.services.auth import authenticate_user, create_access_token
 from backend.services.user import get_user_by_email
 
@@ -30,11 +31,15 @@ def login(form_data: OAuth2PasswordRequestFormStrict = Depends(), db: Session = 
 
 
 @router.post(
-    "/signup", response_model=User, status_code=status.HTTP_201_CREATED, response_class=Response
+    "/signup/students",
+    status_code=status.HTTP_201_CREATED,
+    response_class=Response,
 )
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = get_user_by_email(db, user.email)
+def create_student(student: StudentProfileCreate, db: Session = Depends(get_db)):
+    db_user = get_user_by_email(db, student.email)
     if db_user:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
 
-    auth.create_user(db, user)
+    user_create = UserCreate(email=student.email, password=student.password.get_secret_value())
+    db_user = auth.create_user(db, user_create)
+    students.create_student(db, student, db_user.id)

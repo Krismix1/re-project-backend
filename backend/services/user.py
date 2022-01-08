@@ -1,4 +1,5 @@
 """Database access layer."""
+import uuid
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -6,7 +7,7 @@ from sqlalchemy.orm import Session
 from backend.models import user as user_models
 
 
-def get_user(db: Session, user_id: int) -> Optional[user_models.User]:
+def get_user(db: Session, user_id: uuid.UUID) -> Optional[user_models.User]:
     return db.query(user_models.User).filter(user_models.User.id == user_id).first()
 
 

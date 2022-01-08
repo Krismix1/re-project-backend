@@ -1,10 +1,9 @@
 import uuid
 
-from sqlalchemy import Boolean, Column, Enum, String
+from sqlalchemy import Boolean, Column, String
 from sqlalchemy.dialects.postgresql import UUID
 
 from backend.db.database import Base
-from backend.schemas.user import UserType
 
 
 class User(Base):
@@ -16,7 +15,3 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
-    user_type = Column(
-        Enum(UserType, native_enum=False, values_callable=lambda x: [e.value for e in x]),
-        nullable=False,
-    )
