@@ -11,12 +11,6 @@ router = APIRouter(prefix="/companies", tags=["companies"])
 @router.get("", response_model=list[CompanyProfile])
 def get_companies(db: Session = Depends(get_db)):
     return [
-        CompanyProfile(
-            id=company.id,
-            email=company.account.email,
-            name=company.name,
-            description=company.description,
-            phone=company.phone,
-        )
+        company_service.company_from_db_model(company)
         for company in company_service.get_companies(db)
     ]

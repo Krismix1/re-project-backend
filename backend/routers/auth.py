@@ -5,11 +5,12 @@ from fastapi.security import OAuth2PasswordRequestFormStrict
 from sqlalchemy.orm import Session
 
 from backend.core.config import SETTINGS
+from backend.core.security import get_current_active_user
 from backend.dependencies import get_db
 from backend.schemas.auth import TokenResponse
 from backend.schemas.company import CompanyProfileCreate
 from backend.schemas.student import StudentProfileCreate
-from backend.schemas.user import UserCreate
+from backend.schemas.user import User, UserCreate, UserProfileResponse, UserType
 from backend.services import auth
 from backend.services import company as company_service
 from backend.services import students
@@ -61,3 +62,28 @@ def create_company(company: CompanyProfileCreate, db: Session = Depends(get_db))
     user_create = UserCreate(email=company.email, password=company.password.get_secret_value())
     db_user = auth.create_user(db, user_create)
     company_service.create_company(db, company, db_user.id)
+
+
+@router.get("/me", response_model=UserProfileResponse)
+def get_my_profile(db: Session = Depends(get_db), user: User = Depends(get_current_active_user)):
+    student = students.get_student(db, user.id)
+    if student:
+        return UserProfileResponse(
+            id=user.id,
+            email=user.email,
+            isActive=user.is_active,
+            userType=UserType.STUDENT,
+            profile=students.student_from_db_model(student),
+        )
+
+    company = company_service.get_company(db, user.id)
+    if not company:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Unknown user")
+
+    return UserProfileResponse(
+        id=user.id,
+        email=user.email,
+        isActive=user.is_active,
+        userType=UserType.COMPANY,
+        profile=company_service.company_from_db_model(company),
+    )
