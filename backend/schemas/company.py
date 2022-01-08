@@ -15,3 +15,19 @@ class CompanyProfile(BaseModel):
     name: str
     description: str
     phone: str
+
+
+class InternshipBase(BaseModel):
+    title: str
+    description: str
+
+
+class InternshipCreate(InternshipBase):
+    pass
+
+
+class Internship(InternshipBase):
+    id: UUID4
+
+    class Config:
+        orm_mode = True

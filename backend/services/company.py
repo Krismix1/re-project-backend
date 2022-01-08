@@ -4,7 +4,11 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from backend import models
-from backend.schemas.company import CompanyProfile, CompanyProfileCreate
+from backend.schemas.company import (
+    CompanyProfile,
+    CompanyProfileCreate,
+    InternshipCreate,
+)
 from backend.services.user import get_user
 
 
@@ -40,3 +44,23 @@ def company_from_db_model(company: models.Company) -> CompanyProfile:
         description=company.description,
         phone=company.phone,
     )
+
+
+def create_internship(
+    db: Session, company: models.Company, internship: InternshipCreate
+) -> models.Internship:
+    db_internship = models.Internship(
+        company_id=company.id, description=internship.description, title=internship.title
+    )
+    db.add(db_internship)
+    db.commit()
+    db.refresh(db_internship)
+    return db_internship
+
+
+def get_internships_for_company(db: Session, company: models.Company) -> list[models.Internship]:
+    return db.query(models.Internship).filter(models.Internship.company_id == company.id).all()
+
+
+def get_internships(db: Session) -> list[models.Internship]:
+    return db.query(models.Internship).all()
