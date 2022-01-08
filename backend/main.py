@@ -12,6 +12,7 @@ OPEN_API_TAGS_METADATA = [
     {"name": "operational", "description": "Actions for DevOps."},
     {"name": "auth", "description": "Actions for authorization operations."},
     {"name": "students", "description": "Actions for students."},
+    {"name": "companies", "description": "Actions for companies."},
 ]
 
 logging.basicConfig(level=logging.INFO)

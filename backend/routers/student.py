@@ -15,7 +15,7 @@ def _date_to_ts(date: datetime.date) -> float:
     return time.mktime(date.timetuple())
 
 
-@router.post("", response_model=list[StudentProfile])
+@router.get("", response_model=list[StudentProfile])
 def get_students(db: Session = Depends(get_db)):
     return [
         StudentProfile(

@@ -43,7 +43,8 @@ disable = """
     C0326,
     line-too-long,
     too-few-public-methods,
-    missing-docstring
+    missing-docstring,
+    duplicate-code
     """
 
 good-names="""

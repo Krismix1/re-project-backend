@@ -7,9 +7,12 @@ from sqlalchemy.orm import Session
 from backend.core.config import SETTINGS
 from backend.dependencies import get_db
 from backend.schemas.auth import TokenResponse
+from backend.schemas.company import CompanyProfileCreate
 from backend.schemas.student import StudentProfileCreate
 from backend.schemas.user import UserCreate
-from backend.services import auth, students
+from backend.services import auth
+from backend.services import company as company_service
+from backend.services import students
 from backend.services.auth import authenticate_user, create_access_token
 from backend.services.user import get_user_by_email
 
@@ -43,3 +46,18 @@ def create_student(student: StudentProfileCreate, db: Session = Depends(get_db))
     user_create = UserCreate(email=student.email, password=student.password.get_secret_value())
     db_user = auth.create_user(db, user_create)
     students.create_student(db, student, db_user.id)
+
+
+@router.post(
+    "/signup/companies",
+    status_code=status.HTTP_201_CREATED,
+    response_class=Response,
+)
+def create_company(company: CompanyProfileCreate, db: Session = Depends(get_db)):
+    db_user = get_user_by_email(db, company.email)
+    if db_user:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
+
+    user_create = UserCreate(email=company.email, password=company.password.get_secret_value())
+    db_user = auth.create_user(db, user_create)
+    company_service.create_company(db, company, db_user.id)
