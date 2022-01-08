@@ -57,3 +57,24 @@ class Student(Base):
     account = relationship("User")
     educations = relationship("Education", back_populates="student")
     volunteerings = relationship("Volunteering", back_populates="student")
+
+    internship_applications = relationship("InternshipApplication", back_populates="student")
+
+
+class InternshipApplication(Base):
+    __tablename__ = "internship_applications"
+
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        index=True,
+        nullable=False,
+        unique=True,
+        default=uuid.uuid4,
+    )
+    message = Column(String, nullable=True)
+
+    student_id = Column(UUID(as_uuid=True), ForeignKey("students.id"))
+    student = relationship("Student", back_populates="internship_applications")
+
+    internship_id = Column(UUID(as_uuid=True), ForeignKey("internships.id"))

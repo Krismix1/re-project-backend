@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 from pydantic import UUID4, BaseModel, EmailStr, Field, SecretStr
 
@@ -73,3 +74,15 @@ class StudentProfile(BaseModel):
 
     educations: list[Education] = Field(..., alias="education")
     volunteerings: list[Volunteering] = Field(..., alias="volunteering")
+
+
+class InternshipApplicationBase(BaseModel):
+    message: Optional[str] = Field(None)
+
+
+class InternshipApplicationCreate(InternshipApplicationBase):
+    pass
+
+
+class InternshipApplication(InternshipApplicationBase):
+    id: UUID4

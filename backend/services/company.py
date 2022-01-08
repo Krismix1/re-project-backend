@@ -64,3 +64,7 @@ def get_internships_for_company(db: Session, company: models.Company) -> list[mo
 
 def get_internships(db: Session) -> list[models.Internship]:
     return db.query(models.Internship).all()
+
+
+def get_internship(db: Session, internship_id: uuid.UUID) -> Optional[models.Internship]:
+    return db.query(models.Internship).filter(models.Internship.id == internship_id).first()
