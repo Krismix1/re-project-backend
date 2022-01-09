@@ -20,7 +20,7 @@ from backend.services.company import get_internship
 router = APIRouter(prefix="/internships", tags=["internships"])
 
 
-@router.post("/internships", response_class=Response, status_code=status.HTTP_201_CREATED)
+@router.post("", response_class=Response, status_code=status.HTTP_201_CREATED)
 def create_internship(
     internship: InternshipCreate,
     company: models.Company = Depends(get_company_user),
@@ -54,7 +54,7 @@ def convert_internships(internships: list[models.Internship]) -> list[Internship
     return [convert_internship(i) for i in internships]
 
 
-@router.get("/internships", response_model=list[Internship])
+@router.get("", response_model=list[Internship])
 def get_internships(
     user: Union[models.Student, models.Company] = Depends(get_company_or_student_user),
     db: Session = Depends(get_db),
@@ -70,7 +70,7 @@ def get_internships(
 
 
 @router.post(
-    "/internships/{internship_id}/apply",
+    "/{internship_id}/apply",
     response_class=Response,
     status_code=status.HTTP_201_CREATED,
 )
@@ -101,7 +101,7 @@ def convert_internship_applications(
     ]
 
 
-@router.get("/internships/applications", response_model=list[InternshipApplication])
+@router.get("/applications", response_model=list[InternshipApplication])
 def get_all_internship_applications(
     db: Session = Depends(get_db),
     user: Union[models.Student, models.Company] = Depends(get_company_or_student_user),
@@ -111,7 +111,7 @@ def get_all_internship_applications(
     return convert_internship_applications(company_service.get_applications_for_company(db, user))
 
 
-@router.get("/internships/{internship_id}/applications", response_model=list[InternshipApplication])
+@router.get("/{internship_id}/applications", response_model=list[InternshipApplication])
 def get_internship_applications(
     internship_id: UUID4,
     db: Session = Depends(get_db),
