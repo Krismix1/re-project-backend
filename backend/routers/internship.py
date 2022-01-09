@@ -47,6 +47,9 @@ def convert_internship(i: models.Internship) -> Internship:
         title=i.title,
         description=i.description,
         company=company_service.company_from_db_model(i.company),
+        deadline=students.date_to_ts(i.deadline),
+        startingDate=students.date_to_ts(i.starting_date),
+        endingDate=students.date_to_ts(i.ending_date),
     )
 
 

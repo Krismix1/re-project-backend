@@ -21,7 +21,11 @@ def create_company(
         raise ValueError(f"User with ID {account_id} not found")
 
     db_company = models.Company(
-        id=account_id, phone=company.phone, description=company.description, name=company.name
+        id=account_id,
+        phone=company.phone,
+        description=company.description,
+        name=company.name,
+        domain=company.domain,
     )
     db.add(db_company)
     db.commit()
@@ -44,6 +48,7 @@ def company_from_db_model(company: models.Company) -> CompanyProfile:
         name=company.name,
         description=company.description,
         phone=company.phone,
+        domain=company.domain,
     )
 
 
@@ -51,7 +56,12 @@ def create_internship(
     db: Session, company: models.Company, internship: InternshipCreate
 ) -> models.Internship:
     db_internship = models.Internship(
-        company_id=company.id, description=internship.description, title=internship.title
+        company_id=company.id,
+        description=internship.description,
+        title=internship.title,
+        deadline=internship.deadline,
+        starting_date=internship.starting_date,
+        ending_date=internship.ending_date,
     )
     db.add(db_internship)
     db.commit()
