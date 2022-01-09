@@ -42,3 +42,5 @@ class Internship(Base):
 
     company_id = Column(UUID(as_uuid=True), ForeignKey("companies.id"))
     company = relationship("Company", back_populates="internships")
+
+    applications = relationship("InternshipApplication", back_populates="internship")

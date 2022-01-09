@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from backend import models
 from backend.schemas.student import (
     Education,
+    InternshipApplicationCreate,
     StudentProfile,
     StudentProfileCreate,
     Volunteering,
@@ -91,4 +92,32 @@ def student_from_db_model(student: models.Student):
             )
             for volunteering in student.volunteerings
         ],
+    )
+
+
+def create_internship_application(
+    db: Session,
+    student: models.Student,
+    internship_id: uuid.UUID,
+    application: InternshipApplicationCreate,
+) -> models.InternshipApplication:
+    db_application = models.InternshipApplication(
+        message=application.message, internship_id=internship_id, student_id=student.id
+    )
+    db.add(db_application)
+    db.commit()
+    db.refresh(db_application)
+    return db_application
+
+
+def get_applications_for_student(
+    db: Session,
+    student: models.Student,
+) -> list[models.InternshipApplication]:
+    print(student.id)
+    return (
+        db.query(models.InternshipApplication)
+        .join(models.InternshipApplication.student)
+        .filter(models.Student.id == student.id)
+        .all()
     )

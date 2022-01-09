@@ -3,13 +3,14 @@ from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse
 
 from backend.core.config import SETTINGS
-from backend.routers import auth, company, student
+from backend.routers import auth, company, internship, student
 from backend.schemas.operational import BuildInfo
 
 router = APIRouter()
 router.include_router(auth.router)
 router.include_router(student.router)
 router.include_router(company.router)
+router.include_router(internship.router)
 
 ops_router = APIRouter()
 
