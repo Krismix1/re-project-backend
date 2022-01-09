@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Column, ForeignKey, String
+from sqlalchemy import Column, Date, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -19,6 +19,7 @@ class Company(Base):
         unique=True,
     )
     name = Column(String, nullable=False)
+    domain = Column(String, nullable=False)
     description = Column(String, nullable=False)
     phone = Column(String, nullable=False)
 
@@ -39,6 +40,9 @@ class Internship(Base):
     )
     title = Column(String, nullable=False)
     description = Column(String, nullable=False)
+    deadline = Column(Date, nullable=False)
+    starting_date = Column(Date, nullable=False)
+    ending_date = Column(Date, nullable=False)
 
     company_id = Column(UUID(as_uuid=True), ForeignKey("companies.id"))
     company = relationship("Company", back_populates="internships")

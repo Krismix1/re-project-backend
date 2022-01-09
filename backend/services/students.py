@@ -59,7 +59,7 @@ def get_student(db: Session, user_id: uuid.UUID) -> Optional[models.Student]:
     return db.query(models.Student).filter(models.Student.id == user_id).first()
 
 
-def _date_to_ts(date: datetime.date) -> float:
+def date_to_ts(date: datetime.date) -> float:
     return time.mktime(date.timetuple())
 
 
@@ -69,7 +69,7 @@ def student_from_db_model(student: models.Student):
         email=student.account.email,
         firstName=student.first_name,
         secondName=student.last_name,
-        birthday=_date_to_ts(student.birthdate),
+        birthday=date_to_ts(student.birthdate),
         description=student.description,
         phone=student.phone,
         education=[
@@ -77,8 +77,8 @@ def student_from_db_model(student: models.Student):
                 id=education.id,
                 institutionName=education.institution_name,
                 studiesProgramme=education.studies_programme,
-                startingDate=_date_to_ts(education.starting_date),
-                endingDate=_date_to_ts(education.ending_date),
+                startingDate=date_to_ts(education.starting_date),
+                endingDate=date_to_ts(education.ending_date),
             )
             for education in student.educations
         ],
@@ -87,8 +87,8 @@ def student_from_db_model(student: models.Student):
                 id=volunteering.id,
                 name=volunteering.name,
                 position=volunteering.position,
-                startingDate=_date_to_ts(volunteering.starting_date),
-                endingDate=_date_to_ts(volunteering.ending_date),
+                startingDate=date_to_ts(volunteering.starting_date),
+                endingDate=date_to_ts(volunteering.ending_date),
             )
             for volunteering in student.volunteerings
         ],
