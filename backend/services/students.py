@@ -108,3 +108,16 @@ def create_internship_application(
     db.commit()
     db.refresh(db_application)
     return db_application
+
+
+def get_applications_for_student(
+    db: Session,
+    student: models.Student,
+) -> list[models.InternshipApplication]:
+    print(student.id)
+    return (
+        db.query(models.InternshipApplication)
+        .join(models.InternshipApplication.student)
+        .filter(models.Student.id == student.id)
+        .all()
+    )

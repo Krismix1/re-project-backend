@@ -3,6 +3,8 @@ from typing import Optional
 
 from pydantic import UUID4, BaseModel, EmailStr, Field, SecretStr
 
+from backend.schemas.company import Internship
+
 
 class EducationBase(BaseModel):
     institution_name: str = Field(..., alias="institutionName")
@@ -86,3 +88,8 @@ class InternshipApplicationCreate(InternshipApplicationBase):
 
 class InternshipApplication(InternshipApplicationBase):
     id: UUID4
+    internship: Internship
+    student: StudentProfile
+
+    class Config:
+        orm_mode = True

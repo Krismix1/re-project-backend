@@ -4,6 +4,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from backend import models
+from backend.models.student import InternshipApplication
 from backend.schemas.company import (
     CompanyProfile,
     CompanyProfileCreate,
@@ -68,3 +69,25 @@ def get_internships(db: Session) -> list[models.Internship]:
 
 def get_internship(db: Session, internship_id: uuid.UUID) -> Optional[models.Internship]:
     return db.query(models.Internship).filter(models.Internship.id == internship_id).first()
+
+
+def get_applications_for_company(
+    db: Session,
+    company: models.Company,
+) -> list[models.InternshipApplication]:
+    return (
+        db.query(models.InternshipApplication)
+        .join(models.InternshipApplication.internship)
+        .filter(models.Internship.company_id == company.id)
+        .all()
+    )
+
+
+def get_applications_for_internship(
+    db: Session, internship: models.Internship
+) -> list[InternshipApplication]:
+    return (
+        db.query(models.InternshipApplication)
+        .filter(models.InternshipApplication.internship_id == internship.id)
+        .all()
+    )

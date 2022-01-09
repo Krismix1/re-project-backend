@@ -28,6 +28,7 @@ class InternshipCreate(InternshipBase):
 
 class Internship(InternshipBase):
     id: UUID4
+    company: CompanyProfile
 
     class Config:
         orm_mode = True

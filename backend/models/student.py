@@ -78,3 +78,4 @@ class InternshipApplication(Base):
     student = relationship("Student", back_populates="internship_applications")
 
     internship_id = Column(UUID(as_uuid=True), ForeignKey("internships.id"))
+    internship = relationship("Internship", back_populates="applications")

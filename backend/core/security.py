@@ -1,3 +1,5 @@
+from typing import Union
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
@@ -51,7 +53,7 @@ def get_company_user(
     company = get_company(db, current_user.id)
     if not company:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Only companies can create internships"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Must be logged in with company account"
         )
 
     return company
@@ -63,7 +65,16 @@ def get_student_user(
     student = get_student(db, current_user.id)
     if not student:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Only students can apply to internships"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Must be logged in with student account"
         )
 
     return student
+
+
+def get_company_or_student_user(
+    current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)
+) -> Union[models.Student, models.Company]:
+    try:
+        return get_student_user(current_user, db)
+    except HTTPException:
+        return get_company_user(current_user, db)
